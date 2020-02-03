@@ -2,43 +2,34 @@
 // import * as assert from 'assert';
 // import sinon from 'sinon';
 // import * as databaseLib from '../lib'
-
 // describe('Database class', () => {
 //     let sandbox;
-
 //     beforeEach(() => {
 //         // stub out all database functions
 //         sandbox = sinon.createSandbox()
-        
 //     })
-
 //     afterEach(() => {
 //         // restore all mongo db functions
 //         sandbox.restore();
 //     })
-
 //     describe('firstLetterUpperCase', () => {
 //         it('it should change letter to upperCase', () => {
 //             const name = databaseLib.Database.firstLetterUpperCase('anson')
 //             assert.equal(name, 'Anson');
 //         })
 //     })
-
 //     describe('setCorrectTimeZone', () => {
 //         it('it should set to America/Chicago if no timezone is passed', () => {
 //             const timeZone = databaseLib.timezone
 //             assert.equal(timeZone, 'America/Chicago')
 //         })
-        
 //     })
-
 //     describe('addAppointment', () => {
 //         const barberName = 'Kelly';
 //         const customer = {
 //             phoneNumber: '9082097544',
 //             firstName: 'Anson'
 //         }
-
 //         it('should create an appointment', done => {
 //         // TODO: Find a way to override firebase
 //             const details = {
@@ -59,7 +50,6 @@
 //                 done()
 //             }, done)
 //         })
-
 //         it.only('should not create an appointment, because appointment already scheduled', done => {
 //             // TODO: Find a way to override firebase
 //                 const details = {
@@ -85,3 +75,4 @@
 //             })
 //     })
 // })
+//# sourceMappingURL=db-spec.js.map

@@ -2,7 +2,7 @@
   "name": "fades-of-gray",
   "version": "1.0.0",
   "description": "Fades of Gray appointment system",
-  "main": "index.js",
+  "main": "./dist/index.js",
   "scripts": {
     "build": "tsc",
     "start": "npm run build && export NODE_ENV=production && node dist/server.js",

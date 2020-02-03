@@ -1,7 +1,6 @@
 import admin from 'firebase-admin'
 import { DocumentData } from '@google-cloud/firestore';
 import * as types from '.';
-import developmentData from './sampleData'
 
 admin.initializeApp({
   credential: admin.credential.cert('./config/firebaseAdminKey.json')

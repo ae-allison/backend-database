@@ -3,7 +3,7 @@ import { DocumentData } from '@google-cloud/firestore';
 import * as types from '.';
 
 admin.initializeApp({
-  credential: admin.credential.cert('../../../config/firebaseAdminKey.json')
+  credential: admin.credential.cert('../config/firebaseAdminKey.json')
 });
 
 const db = admin.firestore();

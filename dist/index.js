@@ -5,15 +5,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const firebase_admin_1 = __importDefault(require("firebase-admin"));
 firebase_admin_1.default.initializeApp({
-    credential: firebase_admin_1.default.credential.cert('./config/firebaseAdminKey.json')
+    credential: firebase_admin_1.default.credential.cert('../../../config/firebaseAdminKey.json')
 });
 const db = firebase_admin_1.default.firestore();
 class Database {
-    constructor(rootCollectionPath) {
-        this.rootCollectionPath = rootCollectionPath;
+    constructor(collection) {
+        this.rootCollectionPath = db.collection(collection);
     }
-    addToRootPath(collectionName) {
-        this.rootCollection = this.rootCollection.collection(collectionName);
+    addToRootPath(collection, doc) {
+        this.rootCollection = this.rootCollection.collection(collection).doc(doc);
     }
     resetRootPath() {
         this.rootCollection = db;

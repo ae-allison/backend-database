@@ -12,12 +12,12 @@ export class Database {
   rootCollectionPath;
   rootCollection;
 
-  constructor(rootCollectionPath: string){
-    this.rootCollectionPath = rootCollectionPath
+  constructor(collection: string){
+    this.rootCollectionPath = db.collection(collection)
   }
 
-  public addToRootPath(collectionName: string){
-    this.rootCollection = this.rootCollection.collection(collectionName)
+  public addToRootPath(collection: string, doc: string){
+    this.rootCollection = this.rootCollection.collection(collection).doc(doc);
   }
 
   public resetRootPath(){

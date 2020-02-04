@@ -7,7 +7,7 @@
     "build": "tsc",
     "start": "",
     "dev": "",
-    "test": "tsc && export NODE_ENV=develop && mocha --recursive dist/tests --exit"
+    "test": "tsc && export NODE_ENV=dev && mocha --recursive dist/tests --exit"
   },
   "repository": {
     "type": "git"

@@ -15,7 +15,7 @@ export class AE_Allision {
   initialRoot: FirebaseFirestore.CollectionReference<DocumentData>
 
   constructor(db: FirebaseFirestore.Firestore , collection?: string, path?: PATH){
-    if(!db || !collection && !path) throw("DB needs a collection or array of path to initialize.")
+    if(!db || !collection && !path) throw Error("DB needs a collection or array of path to initialize.")
     if(path){
       const { firstCollection, doc, secondCollection } = path
       this.rootCollection = db.collection(firstCollection).doc(doc).collection(secondCollection)

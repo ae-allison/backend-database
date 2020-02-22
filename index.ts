@@ -1,33 +1,42 @@
 import { DocumentData } from '@google-cloud/firestore';
 
 type RECORD = {
-  id: string
+  id: string,
+  [key: string]: any
 }
 
-type PATH = { 
+type COLLECTION_PATH = { 
   firstCollection: string, 
   doc: string, 
   secondCollection: string 
 }
 
-export class AE_Allision {
-  rootCollection: FirebaseFirestore.CollectionReference<DocumentData> 
-  initialRoot: FirebaseFirestore.CollectionReference<DocumentData>
+type DOC_PATH = { 
+  firstCollection: string, 
+  doc: string, 
+}
 
-  constructor(db: FirebaseFirestore.Firestore , collection?: string, path?: PATH){
-    if(!db || !collection && !path) throw Error("DB needs a collection or array of path to initialize.")
-    if(path){
-      const { firstCollection, doc, secondCollection } = path
-      this.rootCollection = db.collection(firstCollection).doc(doc).collection(secondCollection)
-      this.initialRoot = db.collection(firstCollection).doc(doc).collection(secondCollection)
-    } else {
-      this.rootCollection = db.collection(collection)
-      this.initialRoot = db.collection(collection)
-    }
+export class AE_Allision {
+  firebaseCollection: FirebaseFirestore.CollectionReference<DocumentData> 
+  firebaseDoc: FirebaseFirestore.DocumentReference<DocumentData> 
+
+  constructor(db: FirebaseFirestore.Firestore , collection?: string, collectionPath?: COLLECTION_PATH, docPath?: DOC_PATH){
+    if(!db) throw Error("DB requires a firebase database to initialize.")
+    if(!collection || !collectionPath || !docPath){
+      if(collectionPath){
+        const { firstCollection, doc, secondCollection } = collectionPath
+        this.firebaseCollection = db.collection(firstCollection).doc(doc).collection(secondCollection)
+      } else if(docPath){
+        const { firstCollection, doc } = docPath
+        this.firebaseDoc = db.collection(firstCollection).doc(doc)
+      } else {
+        this.firebaseCollection = db.collection(collection)
+      }
+    } else throw Error("DB needs a collection or array of path to initialize.")
   }
 
   public async findOne(key: string, value: string): Promise<void |DocumentData> {
-      return this.rootCollection.where(`${key}`, '==', value)
+      return this.firebaseCollection.where(`${key}`, '==', value)
       .get()  
       .then(snapshot => {
         if (snapshot.empty) {
@@ -37,9 +46,17 @@ export class AE_Allision {
       }, err => console.log('Error getting documents', err))
   }
 
+  public async findDataInDocument(): Promise<void |DocumentData> {
+    return this.firebaseDoc
+    .get()  
+    .then(snapshot => {
+      return Promise.resolve(snapshot.data())
+    }, err => console.log('Error getting documents', err))
+}
+
   public findAll(): Promise<DocumentData[]> {
     return new Promise((resolve, reject) => {
-      this.rootCollection
+      this.firebaseCollection
         .onSnapshot(snapshot => {
           return resolve(snapshot.docs.map(doc => doc.data()))
         }, reject)
@@ -48,7 +65,7 @@ export class AE_Allision {
 
   public async createAndUpdateOne(properties: RECORD) {
     try {
-      return await this.rootCollection.doc(properties.id).set(properties);
+      return await this.firebaseCollection.doc(properties.id).set(properties);
     } catch(err){
       return err
     }

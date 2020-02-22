@@ -9,11 +9,11 @@ admin.initializeApp({
   });
   
   const db = admin.firestore();
- 
+  
   
 describe('AE_Allision class', () => {
     let sandbox;
-
+    const database = new AE_Allision(db,'websites')
     beforeEach(() => {
         // stub out all database functions
         sandbox = sinon.createSandbox()
@@ -38,7 +38,7 @@ describe('AE_Allision class', () => {
 
     describe('findAllDocuments', () => {
         it('it should find all documents', async () => {
-           const docs = await new AE_Allision(db,'websites').findAll()
+           const docs = await database.findAll()
            const expectedDocuments = [
             { picture: 'grok.io', title: 'King Ju', name: 'kingju' }
            ]
@@ -49,16 +49,26 @@ describe('AE_Allision class', () => {
 
     describe('findOne', () => {
         it('it should find one document', async () => {
-           const docs = await new AE_Allision(db,'websites').findOne('id', 'kingju')
+           const docs = await database.findOne('id', 'kingju')
            const expectedDoc = { picture: 'grok.io', title: 'King Ju', id: 'kingju' }
            assert.deepEqual(docs, expectedDoc);
            return
         })
         it('it should not find the document', async () => {
-            await new AE_Allision(db,'websites').findOne('name', 'f').then(docs => {
+            await database.findOne('name', 'f').then(docs => {
             }, err => {
                 assert.equal(err, 'No matching documents.')
             })
+        })
+    })
+
+    describe('findDataInDocument', () => {
+        it('it should find all data inside document', async () => {
+           const fieldDb = new AE_Allision(db, null, null, { firstCollection: 'websites', doc: 'kingju'}) 
+           const docs = await fieldDb.findDataInDocument()
+           const expectedDoc = { picture: 'grok.io', title: 'King Ju', id: 'kingju' }
+           assert.deepEqual(docs, expectedDoc);
+           return
         })
     })
 
@@ -66,7 +76,7 @@ describe('AE_Allision class', () => {
         it('it should create one document', async () => {
            const doc = { picture: 'grok.io', title: 'King Ju', id: 'kingju' }
            try {
-               await new AE_Allision(db,'websites').createAndUpdateOne(doc)
+               await database.createAndUpdateOne(doc)
                return 
            } catch(err){
                return err

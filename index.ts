@@ -51,7 +51,10 @@ export class AE_Allision {
     .get()  
     .then(snapshot => {
       return Promise.resolve(snapshot.data())
-    }, err => console.log('Error getting documents', err))
+    }, err => { 
+      console.error(err, 'err')
+      throw Error(err) 
+    })
 }
 
   public findAll(): Promise<DocumentData[]> {

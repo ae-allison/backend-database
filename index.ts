@@ -105,7 +105,7 @@ export class AE_Allision {
 
     const backup = {
       time: new Date().toDateString() + ' - ' + new Date().getHours().toString() + ':' + new Date().getMinutes().toString(), 
-      ...companyInfo,
+      companyInfo,
       [`${path.admin}`]: adminInfo,
       [`${path.client}`]: clientInfo,
     };

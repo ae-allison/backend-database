@@ -17,9 +17,9 @@ type DOC_PATH = {
 }
 
 export class AE_Allision {
-  private firebaseCollection: FirebaseFirestore.CollectionReference<DocumentData> 
+  firebaseCollection: FirebaseFirestore.CollectionReference<DocumentData> 
   firebaseDoc: FirebaseFirestore.DocumentReference<DocumentData> 
-  private db: FirebaseFirestore.Firestore
+  db: FirebaseFirestore.Firestore
 
   constructor(db: FirebaseFirestore.Firestore , collection?: string, collectionPath?: COLLECTION_PATH, docPath?: DOC_PATH){
     if(!db) throw Error("DB requires a firebase database to initialize.")

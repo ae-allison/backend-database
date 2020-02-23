@@ -109,9 +109,12 @@ export class AE_Allision {
       [`${path.admin}`]: adminInfo,
       [`${path.client}`]: clientInfo,
     };
+    console.log(backup, 'back')
     // Store backup
-    await db
-    .collection('backups')
-    .add(backup)
+    // await db
+    // .collection('backups')
+    // .add(backup)
+
+    return backup
   }
 }

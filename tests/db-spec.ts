@@ -36,6 +36,14 @@ describe('AE_Allision class', () => {
          })
     })
 
+    describe('createBackup', () => {
+        it.only('it create a backup of database', async () => {
+           const backup = await database.createBackup({ companyType: 'websites', companyName: 'kingju', admin: 'merchandise', client: 'temp'})
+           console.log(backup, 'docs')
+           return Promise.resolve()
+        })
+    })
+    
     describe('findAllDocuments', () => {
         it('it should find all documents', async () => {
            const docs = await database.findAll()
@@ -74,7 +82,7 @@ describe('AE_Allision class', () => {
 
     describe('createOne', () => {
         it('it should create one document', async () => {
-           const doc = { picture: 'grok.io', title: 'King Ju', id: 'kingju' }
+           const doc = { picture: '.pg', title: 'King Ju', id: 'kingju' }
            try {
                await database.createAndUpdateOne(doc)
                return 

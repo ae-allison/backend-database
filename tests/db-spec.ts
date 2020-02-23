@@ -37,9 +37,8 @@ describe('AE_Allision class', () => {
     })
 
     describe('createBackup', () => {
-        it.only('it create a backup of database', async () => {
+        it('it create a backup of database', async () => {
            const backup = await database.createBackup({ companyType: 'websites', companyName: 'kingju', admin: 'merchandise', client: 'temp'})
-           console.log(backup, 'docs')
            return Promise.resolve()
         })
     })
@@ -58,7 +57,7 @@ describe('AE_Allision class', () => {
     describe('findOne', () => {
         it('it should find one document', async () => {
            const docs = await database.findOne('id', 'kingju')
-           const expectedDoc = { picture: 'grok.io', title: 'King Ju', id: 'kingju' }
+           const expectedDoc = { picture: '.pg', title: 'King Ju', id: 'kingju' }
            assert.deepEqual(docs, expectedDoc);
            return
         })
@@ -74,7 +73,7 @@ describe('AE_Allision class', () => {
         it('it should find all data inside document', async () => {
            const fieldDb = new AE_Allision(db, null, null, { firstCollection: 'websites', doc: 'kingju'}) 
            const docs = await fieldDb.findDataInDocument()
-           const expectedDoc = { picture: 'grok.io', title: 'King Ju', id: 'kingju' }
+           const expectedDoc = { picture: '.pg', title: 'King Ju', id: 'kingju' }
            assert.deepEqual(docs, expectedDoc);
            return
         })

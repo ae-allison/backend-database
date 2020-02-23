@@ -18,7 +18,7 @@ type DOC_PATH = {
 
 export class AE_Allision {
   private firebaseCollection: FirebaseFirestore.CollectionReference<DocumentData> 
-  private firebaseDoc: FirebaseFirestore.DocumentReference<DocumentData> 
+  firebaseDoc: FirebaseFirestore.DocumentReference<DocumentData> 
   private db: FirebaseFirestore.Firestore
 
   constructor(db: FirebaseFirestore.Firestore , collection?: string, collectionPath?: COLLECTION_PATH, docPath?: DOC_PATH){

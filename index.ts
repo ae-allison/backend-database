@@ -84,20 +84,20 @@ export class AE_Allision {
     }
   }
 
-  public async createBackup(path: {companyType: string, companyName: string, admin: string, client: string}){
+  public static async createBackup(db, path: {companyType: string, companyName: string, admin: string, client: string}){
     // backup company info
-    const companyInfo = (await this.db
+    const companyInfo = (await db
       .collection(path.companyType)
       .doc(path.companyName)
       .get()).data()
     // backup admin info
-    const adminInfo =(await this.db
+    const adminInfo =(await db
         .collection(path.companyType)
         .doc(path.companyName)
         .collection(path.admin)
         .get()).docs.map(doc => doc.data())
 
-    const clientInfo = (await this.db
+    const clientInfo = (await db
       .collection(path.companyType)
       .doc(path.companyName)
       .collection(path.client)
@@ -110,7 +110,7 @@ export class AE_Allision {
       [`${path.client}`]: clientInfo,
     };
     // Store backup
-    await this.db
+    await db
     .collection('backups')
     .add(backup)
   }

@@ -33,7 +33,7 @@ describe('AE_Allision class', () => {
 
     describe('createBackup', () => {
         it.only('it create a backup of database', async () => {
-           const backup = await database.createBackup({ companyType: 'websites', companyName: 'kingju', admin: 'merchandise', client: 'temp'})
+           const backup = await AE_Allision.createBackup(db, { companyType: 'websites', companyName: 'kingju', admin: 'merchandise', client: 'temp'})
            return Promise.resolve()
         })
     })

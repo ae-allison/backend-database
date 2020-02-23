@@ -7,16 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const firebase_admin_1 = __importDefault(require("firebase-admin"));
-firebase_admin_1.default.initializeApp({
-    credential: firebase_admin_1.default.credential.cert('./config/firebaseAdminKey.json'),
-    databaseURL: "https://website-builder-c685d.firebaseio.com"
-});
-exports.firebase = firebase_admin_1.default;
 class AE_Allision {
     constructor(db, collection, collectionPath, docPath) {
         if (!db)

@@ -1,12 +1,4 @@
 import { DocumentData } from '@google-cloud/firestore';
-import fs from 'fs'
-import admin from 'firebase-admin'
-
-admin.initializeApp({
-  credential: admin.credential.cert('./config/firebaseAdminKey.json'),
-  databaseURL: "https://website-builder-c685d.firebaseio.com"
-});
-export const firebase = admin
 
 type RECORD = {
   id: string,

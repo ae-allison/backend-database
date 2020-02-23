@@ -1,14 +1,9 @@
 import 'mocha';
 import * as assert from 'assert';
 import sinon from 'sinon';
-import { AE_Allision } from '../'
-import admin from 'firebase-admin'
+import { AE_Allision, firebase } from '../'
 
-admin.initializeApp({
-    credential: admin.credential.cert('./config/firebaseAdminKey.json')
-  });
-  
-  const db = admin.firestore();
+const db = firebase.firestore();
   
   
 describe('AE_Allision class', () => {
@@ -37,7 +32,7 @@ describe('AE_Allision class', () => {
     })
 
     describe('createBackup', () => {
-        it('it create a backup of database', async () => {
+        it.only('it create a backup of database', async () => {
            const backup = await database.createBackup({ companyType: 'websites', companyName: 'kingju', admin: 'merchandise', client: 'temp'})
            return Promise.resolve()
         })

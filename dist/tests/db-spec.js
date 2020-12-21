@@ -22,8 +22,16 @@ require("mocha");
 const assert = __importStar(require("assert"));
 const sinon_1 = __importDefault(require("sinon"));
 const __1 = require("../");
-describe('Database class', () => {
+const firebase_admin_1 = __importDefault(require("firebase-admin"));
+firebase_admin_1.default.initializeApp({
+    credential: firebase_admin_1.default.credential.cert("./config/firebaseAdminKey.json"),
+    databaseURL: "https://website-builder-c685d.firebaseio.com"
+});
+exports.firebase = firebase_admin_1.default;
+const db = exports.firebase.firestore();
+describe("AE_Allision class", () => {
     let sandbox;
+    const database = new __1.AE_Allision(db, ["websites"]);
     beforeEach(() => {
         // stub out all database functions
         sandbox = sinon_1.default.createSandbox();
@@ -32,42 +40,69 @@ describe('Database class', () => {
         // restore all mongo db functions
         sandbox.restore();
     });
-    describe('findAllDocuments', () => {
-        it('it should find all documents', () => __awaiter(this, void 0, void 0, function* () {
-            const docs = yield new __1.Database('websites').findAll();
+    describe("Initializing db wrapper lib", () => {
+        it("it should fail because a collection or path was not passed", () => {
+            assert.throws(() => {
+                new __1.AE_Allision(db);
+            });
+        });
+        it.only("it should initialize", () => __awaiter(this, void 0, void 0, function* () {
+            const allWebsites = yield new __1.AE_Allision(db, [
+                "ju",
+                "data",
+                "test"
+            ]).findAll();
+            console.log(allWebsites, "all websites");
+        }));
+    });
+    describe("createBackup", () => {
+        it("it create a backup of database", () => __awaiter(this, void 0, void 0, function* () {
+            const backup = yield __1.AE_Allision.createBackup(db, {
+                companyType: "websites",
+                companyName: "kingju",
+                admin: "merchandise",
+                client: "temp"
+            });
+            return Promise.resolve();
+        }));
+    });
+    describe("findAllDocuments", () => {
+        it("it should find all documents", () => __awaiter(this, void 0, void 0, function* () {
+            const docs = yield database.findAll();
             const expectedDocuments = [
-                { picture: 'grok.io', title: 'King Ju', name: 'kingju' }
+                { picture: "grok.io", title: "King Ju", name: "kingju" }
             ];
             assert.deepEqual(docs[0], expectedDocuments[0]);
             return;
         }));
-        it('it should not find the documents', () => __awaiter(this, void 0, void 0, function* () {
-            assert.throws(() => {
-                new __1.Database('').findAll().then(docs => {
-                    return;
-                });
-            });
-        }));
     });
-    describe('findOne', () => {
-        it('it should find one document', () => __awaiter(this, void 0, void 0, function* () {
-            const docs = yield new __1.Database('websites').findOne('name', 'kingju');
-            const expectedDoc = { picture: 'grok.io', title: 'King Ju', name: 'kingju' };
+    describe("findOne", () => {
+        it("it should find one document", () => __awaiter(this, void 0, void 0, function* () {
+            const docs = yield database.findOne("id", "kingju");
+            const expectedDoc = { picture: ".pg", title: "King Ju", id: "kingju" };
             assert.deepEqual(docs, expectedDoc);
             return;
         }));
-        it('it should not find the document', () => __awaiter(this, void 0, void 0, function* () {
-            yield new __1.Database('websites').findOne('name', 'f').then(docs => {
-            }, err => {
-                assert.equal(err, 'No matching documents.');
+        it("it should not find the document", () => __awaiter(this, void 0, void 0, function* () {
+            yield database.findOne("name", "f").then(docs => { }, err => {
+                assert.equal(err, "No matching documents.");
             });
         }));
     });
-    describe('createOne', () => {
-        it('it should create one document', () => __awaiter(this, void 0, void 0, function* () {
-            const doc = { picture: 'grok.io', title: 'King Ju', id: 'kingju' };
+    describe("findDataInDocument", () => {
+        it("it should find all data inside document", () => __awaiter(this, void 0, void 0, function* () {
+            const fieldDb = new __1.AE_Allision(db, ["websites", "kingju"]);
+            const docs = yield fieldDb.findDataInDocument();
+            const expectedDoc = { picture: ".pg", title: "King Ju", id: "kingju" };
+            assert.deepEqual(docs, expectedDoc);
+            return;
+        }));
+    });
+    describe("createOne", () => {
+        it("it should create one document", () => __awaiter(this, void 0, void 0, function* () {
+            const doc = { picture: ".pg", title: "King Ju", id: "kingju" };
             try {
-                yield new __1.Database('websites').createAndUpdateOne(doc);
+                yield database.createAndUpdateOne(doc);
                 return;
             }
             catch (err) {

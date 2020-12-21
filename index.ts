@@ -8,7 +8,6 @@ export class AE_Allision {
     if (collectionPath) {
       this.db = db;
       this.setReference(collectionPath);
-      console.log(this.aeReference, "ae Reference");
     } else throw Error("DB needs a collection or array of path to initialize.");
   }
 
@@ -22,6 +21,7 @@ export class AE_Allision {
   public AECollection: AE_Collection;
 
   private setReference = (path: string[]) => {
+    // Dynamically set the reference to use
     let dbToUse: any = this.db;
 
     path.forEach((item, index) => {
@@ -45,55 +45,6 @@ export class AE_Allision {
       this.AEDocument = new AE_Document(this.aeReference);
     }
   };
-
-  // public static async createBackup(
-  //   db,
-  //   path: {
-  //     companyPath: string[];
-  //     admin: string;
-  //     client: string;
-  //   }
-  // ) {
-  //   // backup company info
-  //   const companyInfo = (
-  //     await db
-  //       .collection(path.companyPath[0])
-  //       .doc(path.companyPath[1])
-  //       .get()
-  //   ).data();
-  //   // backup admin info
-  //   const adminInfo = (
-  //     await db
-  //       .collection(path.companyPath[0])
-  //       .doc(path.companyPath[1])
-  //       .collection(path.admin)
-  //       .get()
-  //   ).docs.map(doc => doc.data());
-
-  //   const clientInfo = (
-  //     await db
-  //       .collection(path.companyPath[0])
-  //       .doc(path.companyPath[1])
-  //       .collection(path.client)
-  //       .get()
-  //   ).docs.map(doc => doc.data());
-
-  //   const backup = {
-  //     time:
-  //       new Date().toDateString() +
-  //       " - " +
-  //       new Date().getHours().toString() +
-  //       ":" +
-  //       new Date().getMinutes().toString(),
-  //     companyInfo,
-  //     [`${path.admin}`]: adminInfo,
-  //     [`${path.client}`]: clientInfo
-  //   };
-
-  //   // Store backup
-  //   await db.collection("backups").add(backup);
-  //   return backup;
-  // }
 }
 
 class AE_Document {

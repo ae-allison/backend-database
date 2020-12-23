@@ -11,11 +11,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 class AE_Allision {
     constructor(db, collectionPath) {
         this.setReference = (path) => {
+            // Dynamically set the reference to use
             let dbToUse = this.db;
             path.forEach((item, index) => {
                 if (index % 2 === 0) {
                     dbToUse = dbToUse.collection(item);
-                    console.log(dbToUse.onSnapshot, "db to use");
                 }
                 else {
                     dbToUse = dbToUse.doc(item);
@@ -24,10 +24,12 @@ class AE_Allision {
             if (path.length % 2 !== 0) {
                 let castDBToUse = dbToUse;
                 this.aeReference = castDBToUse;
+                this.AECollection = new AE_Collection(this.aeReference);
             }
             else {
                 let castDBToUse = dbToUse;
                 this.aeReference = castDBToUse;
+                this.AEDocument = new AE_Document(this.aeReference);
             }
         };
         console.log("Initializing db from path ... ", collectionPath);
@@ -36,10 +38,29 @@ class AE_Allision {
         if (collectionPath) {
             this.db = db;
             this.setReference(collectionPath);
-            console.log(this.aeReference, "ae Reference");
         }
         else
             throw Error("DB needs a collection or array of path to initialize.");
+    }
+}
+exports.AE_Allision = AE_Allision;
+class AE_Document {
+    constructor(aeReference) {
+        this.aeReference = aeReference;
+    }
+    findDataInDocument() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.aeReference.get().then(snapshot => {
+                return Promise.resolve(snapshot.data());
+            }, err => {
+                throw Error(err);
+            });
+        });
+    }
+}
+class AE_Collection {
+    constructor(aeReference) {
+        this.aeReference = aeReference;
     }
     findOne(key, value) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -52,15 +73,6 @@ class AE_Allision {
                 }
                 return Promise.resolve(snapshot.docs[0].data());
             }, err => console.log("Error getting documents", err));
-        });
-    }
-    findDataInDocument() {
-        return __awaiter(this, void 0, void 0, function* () {
-            return this.aeReference.get().then(snapshot => {
-                return Promise.resolve(snapshot.data());
-            }, err => {
-                throw Error(err);
-            });
         });
     }
     findAll() {
@@ -80,39 +92,5 @@ class AE_Allision {
             }
         });
     }
-    static createBackup(db, path) {
-        return __awaiter(this, void 0, void 0, function* () {
-            // backup company info
-            const companyInfo = (yield db
-                .collection(path.companyType)
-                .doc(path.companyName)
-                .get()).data();
-            // backup admin info
-            const adminInfo = (yield db
-                .collection(path.companyType)
-                .doc(path.companyName)
-                .collection(path.admin)
-                .get()).docs.map(doc => doc.data());
-            const clientInfo = (yield db
-                .collection(path.companyType)
-                .doc(path.companyName)
-                .collection(path.client)
-                .get()).docs.map(doc => doc.data());
-            const backup = {
-                time: new Date().toDateString() +
-                    " - " +
-                    new Date().getHours().toString() +
-                    ":" +
-                    new Date().getMinutes().toString(),
-                companyInfo,
-                [`${path.admin}`]: adminInfo,
-                [`${path.client}`]: clientInfo
-            };
-            // Store backup
-            yield db.collection("backups").add(backup);
-            return backup;
-        });
-    }
 }
-exports.AE_Allision = AE_Allision;
 //# sourceMappingURL=index.js.map

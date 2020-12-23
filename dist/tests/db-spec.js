@@ -31,7 +31,7 @@ exports.firebase = firebase_admin_1.default;
 const db = exports.firebase.firestore();
 describe("AE_Allision class", () => {
     let sandbox;
-    const database = new __1.AE_Allision(db, ["websites"]);
+    const database = new __1.AE_Allision(db, ["ju", "data"]);
     beforeEach(() => {
         // stub out all database functions
         sandbox = sinon_1.default.createSandbox();
@@ -46,29 +46,23 @@ describe("AE_Allision class", () => {
                 new __1.AE_Allision(db);
             });
         });
-        it.only("it should initialize", () => __awaiter(this, void 0, void 0, function* () {
-            const allWebsites = yield new __1.AE_Allision(db, [
-                "ju",
-                "data",
-                "test"
-            ]).findAll();
-            console.log(allWebsites, "all websites");
+        it("it should initialize", () => __awaiter(this, void 0, void 0, function* () {
+            yield new __1.AE_Allision(db, ["ju", "data", "test"]);
         }));
     });
-    describe("createBackup", () => {
-        it("it create a backup of database", () => __awaiter(this, void 0, void 0, function* () {
-            const backup = yield __1.AE_Allision.createBackup(db, {
-                companyType: "websites",
-                companyName: "kingju",
-                admin: "merchandise",
-                client: "temp"
-            });
-            return Promise.resolve();
-        }));
-    });
+    //   describe("createBackup", () => {
+    //     it("it create a backup of database", async () => {
+    //       const backup = await AE_Allision.createBackup(db, {
+    //         companyPath: ["websites", "kingju"],
+    //         admin: "merchandise",
+    //         client: "temp"
+    //       });
+    //       return Promise.resolve();
+    //     });
+    //   });
     describe("findAllDocuments", () => {
         it("it should find all documents", () => __awaiter(this, void 0, void 0, function* () {
-            const docs = yield database.findAll();
+            const docs = yield database.AEDocument.findDataInDocument();
             const expectedDocuments = [
                 { picture: "grok.io", title: "King Ju", name: "kingju" }
             ];
@@ -78,13 +72,13 @@ describe("AE_Allision class", () => {
     });
     describe("findOne", () => {
         it("it should find one document", () => __awaiter(this, void 0, void 0, function* () {
-            const docs = yield database.findOne("id", "kingju");
+            const docs = yield database.AECollection.findOne("id", "kingju");
             const expectedDoc = { picture: ".pg", title: "King Ju", id: "kingju" };
             assert.deepEqual(docs, expectedDoc);
             return;
         }));
         it("it should not find the document", () => __awaiter(this, void 0, void 0, function* () {
-            yield database.findOne("name", "f").then(docs => { }, err => {
+            yield database.AECollection.findOne("name", "f").then(docs => { }, err => {
                 assert.equal(err, "No matching documents.");
             });
         }));
@@ -92,7 +86,7 @@ describe("AE_Allision class", () => {
     describe("findDataInDocument", () => {
         it("it should find all data inside document", () => __awaiter(this, void 0, void 0, function* () {
             const fieldDb = new __1.AE_Allision(db, ["websites", "kingju"]);
-            const docs = yield fieldDb.findDataInDocument();
+            const docs = yield fieldDb.AEDocument.findDataInDocument();
             const expectedDoc = { picture: ".pg", title: "King Ju", id: "kingju" };
             assert.deepEqual(docs, expectedDoc);
             return;
@@ -102,7 +96,7 @@ describe("AE_Allision class", () => {
         it("it should create one document", () => __awaiter(this, void 0, void 0, function* () {
             const doc = { picture: ".pg", title: "King Ju", id: "kingju" };
             try {
-                yield database.createAndUpdateOne(doc);
+                yield database.AECollection.createAndUpdateOne(doc);
                 return;
             }
             catch (err) {

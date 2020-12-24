@@ -1,6 +1,6 @@
 {
   "name": "ae-backend-database",
-  "version": "1.1.0",
+  "version": "1.1.0.1",
   "description": "AE's higher layer firestore wrapper",
   "main": "./dist/index.js",
   "scripts": {
